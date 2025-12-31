@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Générateur de Planning - LOH TECH</title>
+    <title>ESETEC Planning Manager | LOH TECH</title>
     <link rel="stylesheet" href="style/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -12,91 +12,110 @@
 
     <header class="no-print">
         <div class="container">
-            <h1><i class="fas fa-calendar-alt"></i> Générateur de Planning Web</h1>
-            <p>Expertise Éducative - <strong>LOH TECH</strong> | 2025</p>
+            <div class="header-content">
+                <i class="fas fa-university fa-3x"></i>
+                <div>
+                    <h1>ESETEC Planning Flow</h1>
+                    <p>Système Intelligent de Gestion des Emplois du Temps</p>
+                </div>
+            </div>
         </div>
     </header>
     
     <section id="config-section" class="container no-print">
-        <div class="section-title">
-            <h3><i class="fas fa-tools"></i> Configuration des Ressources</h3>
-            <p>Ajoutez vos enseignants et salles avant de générer le planning.</p>
-        </div>
-
         <div class="config-grid">
+            
             <div class="config-card">
-                <h4><i class="fas fa-user-tie"></i> Professeurs</h4>
-                <div class="input-group">
-                    <input type="text" id="prof-name" placeholder="Nom de l'enseignant">
-                    <select id="prof-matiere">
-                        <option value="Mathématiques">Mathématiques</option>
-                        <option value="Physique-Chimie">Physique-Chimie</option>
-                        <option value="Français">Français</option>
-                        <option value="SVT">SVT</option>
-                        <option value="Histoire-Géo">Histoire-Géo</option>
-                        <option value="Anglais">Anglais</option>
-                        <option value="EPS">EPS (Sport)</option>
-                        <option value="Informatique">Informatique</option>
+                <h4><i class="fas fa-layer-group"></i> Paramètres du Planning</h4>
+                <div class="form-group">
+                    <label>Filière Académique :</label>
+                    <select id="filiere-select">
+                        <option value="IDA">IDA (Développement d'Applis)</option>
+                        <option value="FC">FC (Finances Comptabilité)</option>
+                        <option value="RHCOM">RHCOM (Ressources Humaines)</option>
+                        <option value="GEC">GEC (Gestion Commerciale)</option>
+                        <option value="GBAT">GBAT (Génie Bâtiment)</option>
+                        <option value="RIT">RIT (Réseaux Télécoms)</option>
                     </select>
-                    <button onclick="ajouterProf()" class="btn primary-alt">Ajouter</button>
                 </div>
-                <ul id="list-profs" class="resource-list"></ul>
+                <div class="form-group" style="margin-top: 15px;">
+                    <label>Niveau d'étude :</label>
+                    <select id="niveau-select">
+                        <option value="BTS 1">BTS 1ère Année</option>
+                        <option value="BTS 2">BTS 2ème Année</option>
+                        <option value="Licence">Licence Professionnelle</option>
+                    </select>
+                </div>
             </div>
 
             <div class="config-card">
-                <h4><i class="fas fa-door-open"></i> Salles de classe</h4>
+                <h4><i class="fas fa-user-clock"></i> Enseignants & Dispos</h4>
                 <div class="input-group">
-                    <input type="text" id="room-name" placeholder="Ex: Salle 102, Labo...">
-                    <button onclick="ajouterSalle()" class="btn primary-alt">Ajouter</button>
+                    <input type="text" id="prof-name" placeholder="Nom (ex: Mr Afro)">
+                    <input type="text" id="prof-specialites" placeholder="Spécialités (ex: Algo, POO, Python)">
+                    
+                    <div class="availability-picker" style="margin-top: 10px; background: #f9f9f9; padding: 10px; border-radius: 5px;">
+                        <p style="font-size: 0.8rem; font-weight: bold; margin-bottom: 5px;">Présence hebdomadaire :</p>
+                        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                            <label><input type="checkbox" class="day-check" value="Lundi"> Lun</label>
+                            <label><input type="checkbox" class="day-check" value="Mardi"> Mar</label>
+                            <label><input type="checkbox" class="day-check" value="Mercredi"> Mer</label>
+                            <label><input type="checkbox" class="day-check" value="Jeudi"> Jeu</label>
+                            <label><input type="checkbox" class="day-check" value="Vendredi"> Ven</label>
+                        </div>
+                    </div>
+
+                    <button onclick="ajouterProf()" class="btn primary-alt" style="width: 100%; margin-top: 10px;">
+                        <i class="fas fa-plus-circle"></i> Enregistrer l'enseignant
+                    </button>
                 </div>
-                <ul id="list-rooms" class="resource-list"></ul>
+                <ul id="list-profs" class="resource-list" style="max-height: 150px; overflow-y: auto; margin-top: 10px;"></ul>
             </div>
         </div>
     </section>
 
     <main class="container">
-        
         <div class="stats-grid no-print">
             <div class="stat-card">
-                <span class="stat-label">Charge Horaire</span>
+                <span class="stat-label">Filière</span>
+                <span id="display-filiere" class="stat-value">-</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-label">Niveau</span>
+                <span id="display-niveau" class="stat-value">-</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-label">Volume Horaire</span>
                 <span id="total-hours" class="stat-value">0h</span>
-            </div>
-            <div class="stat-card">
-                <span class="stat-label">Matières actives</span>
-                <span id="stat-subjects" class="stat-value">0</span>
-            </div>
-            <div class="stat-card">
-                <span class="stat-label">Conflits</span>
-                <span id="conflict-count" class="stat-value text-danger">0</span>
             </div>
         </div>
 
         <div class="controls no-print">
             <button id="btnGenerate" class="btn primary"><i class="fas fa-magic"></i> Générer Intelligent</button>
-            <button id="btnDownload" class="btn secondary" disabled><i class="fas fa-file-pdf"></i> Exporter PDF</button>
-            <button id="btnReset" class="btn danger"><i class="fas fa-trash"></i> Réinitialiser</button>
-            <button id="btnTheme" class="btn dark-toggle"><i class="fas fa-moon"></i> Mode</button>
+            <button id="btnDownload" class="btn secondary" disabled><i class="fas fa-file-pdf"></i> Imprimer / PDF</button>
+            <button id="btnReset" class="btn danger"><i class="fas fa-trash-alt"></i> Réinitialiser</button>
+            <button id="btnTheme" class="btn dark-toggle"><i class="fas fa-moon"></i></button>
         </div>
 
-        <div id="schedule-container" class="glass-container">
-            <div class="placeholder-text">
-                <i class="fas fa-layer-group fa-3x" style="opacity: 0.2; margin-bottom: 15px;"></i>
-                <p>Prêt pour la génération de la classe de 3ème.</p>
+        <div id="print-area">
+            <div id="schedule-container" class="glass-container">
+                <div class="placeholder-text">
+                    <p><i class="fas fa-calendar-check fa-2x"></i><br>Configurez vos experts puis cliquez sur Générer.</p>
+                </div>
             </div>
-        </div>
 
-        <div id="notes-section">
-            <h3><i class="fas fa-edit"></i> Notes et Devoirs</h3>
-            <div id="notes-content" contenteditable="true" class="notes-paper">
-                Cliquez ici pour ajouter des rappels (ex: Réunion parents-profs, Devoirs de Maths)...
+            <div id="notes-section">
+                <h3><i class="fas fa-info-circle"></i> Notes & Informations</h3>
+                <div id="notes-content" contenteditable="true" class="notes-paper">
+                    Saisissez ici les devoirs, dates d'examens ou rappels administratifs...
+                </div>
             </div>
         </div>
     </main>
 
     <footer class="no-print">
         <div class="container">
-            <p>&copy; 2025 <strong>LOH ANGE EBENEZER</strong> | LOH TECH - Innovation Éducative.</p>
-            <p style="font-size: 0.7rem; margin-top: 5px; opacity: 0.6;">Propulsé par PlanningFlow Engine</p>
+            <p>&copy; 2025 <strong>LOH ANGE EBENEZER</strong> | Projet ESETEC - LOH TECH</p>
         </div>
     </footer>
 

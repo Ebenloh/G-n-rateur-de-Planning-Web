@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Générateur de Planning - LOH TECH</title>
+    <link rel="stylesheet" href="style/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+
+    <header class="no-print">
+        <div class="container">
+            <h1><i class="fas fa-calendar-alt"></i> Générateur de Planning Web</h1>
+            <p>Expertise Éducative - <strong>LOH TECH</strong> | 2025</p>
+        </div>
+    </header>
+    
+    <section id="config-section" class="container no-print">
+        <div class="section-title">
+            <h3><i class="fas fa-tools"></i> Configuration des Ressources</h3>
+            <p>Ajoutez vos enseignants et salles avant de générer le planning.</p>
+        </div>
+
+        <div class="config-grid">
+            <div class="config-card">
+                <h4><i class="fas fa-user-tie"></i> Professeurs</h4>
+                <div class="input-group">
+                    <input type="text" id="prof-name" placeholder="Nom de l'enseignant">
+                    <select id="prof-matiere">
+                        <option value="Mathématiques">Mathématiques</option>
+                        <option value="Physique-Chimie">Physique-Chimie</option>
+                        <option value="Français">Français</option>
+                        <option value="SVT">SVT</option>
+                        <option value="Histoire-Géo">Histoire-Géo</option>
+                        <option value="Anglais">Anglais</option>
+                        <option value="EPS">EPS (Sport)</option>
+                        <option value="Informatique">Informatique</option>
+                    </select>
+                    <button onclick="ajouterProf()" class="btn primary-alt">Ajouter</button>
+                </div>
+                <ul id="list-profs" class="resource-list"></ul>
+            </div>
+
+            <div class="config-card">
+                <h4><i class="fas fa-door-open"></i> Salles de classe</h4>
+                <div class="input-group">
+                    <input type="text" id="room-name" placeholder="Ex: Salle 102, Labo...">
+                    <button onclick="ajouterSalle()" class="btn primary-alt">Ajouter</button>
+                </div>
+                <ul id="list-rooms" class="resource-list"></ul>
+            </div>
+        </div>
+    </section>
+
+    <main class="container">
+        
+        <div class="stats-grid no-print">
+            <div class="stat-card">
+                <span class="stat-label">Charge Horaire</span>
+                <span id="total-hours" class="stat-value">0h</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-label">Matières actives</span>
+                <span id="stat-subjects" class="stat-value">0</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-label">Conflits</span>
+                <span id="conflict-count" class="stat-value text-danger">0</span>
+            </div>
+        </div>
+
+        <div class="controls no-print">
+            <button id="btnGenerate" class="btn primary"><i class="fas fa-magic"></i> Générer Intelligent</button>
+            <button id="btnDownload" class="btn secondary" disabled><i class="fas fa-file-pdf"></i> Exporter PDF</button>
+            <button id="btnReset" class="btn danger"><i class="fas fa-trash"></i> Réinitialiser</button>
+            <button id="btnTheme" class="btn dark-toggle"><i class="fas fa-moon"></i> Mode</button>
+        </div>
+
+        <div id="schedule-container" class="glass-container">
+            <div class="placeholder-text">
+                <i class="fas fa-layer-group fa-3x" style="opacity: 0.2; margin-bottom: 15px;"></i>
+                <p>Prêt pour la génération de la classe de 3ème.</p>
+            </div>
+        </div>
+
+        <div id="notes-section">
+            <h3><i class="fas fa-edit"></i> Notes et Devoirs</h3>
+            <div id="notes-content" contenteditable="true" class="notes-paper">
+                Cliquez ici pour ajouter des rappels (ex: Réunion parents-profs, Devoirs de Maths)...
+            </div>
+        </div>
+    </main>
+
+    <footer class="no-print">
+        <div class="container">
+            <p>&copy; 2025 <strong>LOH ANGE EBENEZER</strong> | LOH TECH - Innovation Éducative.</p>
+            <p style="font-size: 0.7rem; margin-top: 5px; opacity: 0.6;">Propulsé par PlanningFlow Engine</p>
+        </div>
+    </footer>
+
+    <script src="Js/Javascript.js"></script>
+</body>
+</html>

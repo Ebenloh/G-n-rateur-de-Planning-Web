@@ -1,107 +1,115 @@
-function generate() {
+const matieresParFiliere = {
+    "IDA": ["ALGORITHME", "POO", "BASE DE DONNEES", "DEVELOPPEMENT WEB", "PYTHON", "NEGOCIATION INFO", "ANGLAIS", "DROIT", "MERISE", "RESEAU"],
+    "FC": ["COMPTABILITE", "FISCALITE", "MATH FINANCIERE", "AUDIT"],
+    "RHCOM": ["GESTION RH", "COMMUNICATION", "DROIT DU TRAVAIL"],
+    "GEC": ["MARKETING", "TECHNIQUES DE VENTE"],
+    "GBAT": ["TOPOGRAPHIE", "RDM", "BETON ARME"],
+    "RIT": ["CISCO", "LINUX", "TRANSMISSION HF"]
+};
 
+let coursProgrammes = JSON.parse(localStorage.getItem('esetec_final_data')) || [];
+
+document.addEventListener('DOMContentLoaded', () => {
+    changerFiliere(); // Initialise les matières au chargement
+});
+
+function changerFiliere() {
     const filiere = document.getElementById('filiere-select').value;
-    const niveau = document.getElementById('niveau-select').value;
-    const matieresFiliere = ecoleData[filiere];
+    const matiereSelect = document.getElementById('prof-matiere');
+    matiereSelect.innerHTML = matieresParFiliere[filiere].map(m => `<option value="${m}">${m}</option>`).join('');
+    updateUI();
+}
 
-    if (!matieresFiliere) {
-        alert("Sélectionnez une filière !");
-        return;
+function ajouterCours() {
+    const prof = document.getElementById('prof-name').value.trim();
+    const matiere = document.getElementById('prof-matiere').value;
+    const tranche = document.getElementById('time-select').value;
+    const filiere = document.getElementById('filiere-select').value;
+    const joursCoches = Array.from(document.querySelectorAll('.day-checkbox:checked')).map(cb => cb.value);
+
+    if (!prof) return alert("Entrez le nom du professeur !");
+    if (joursCoches.length === 0) return alert("Sélectionnez au moins un jour !");
+
+    joursCoches.forEach(jour => {
+        const existeDeja = coursProgrammes.find(c => c.filiere === filiere && c.jour === jour && c.tranche === tranche);
+        if (!existeDeja) {
+            coursProgrammes.push({ prof, matiere, jour, tranche, filiere });
+        }
+    });
+    
+    localStorage.setItem('esetec_final_data', JSON.stringify(coursProgrammes));
+    updateUI();
+    document.getElementById('prof-name').value = "";
+    document.querySelectorAll('.day-checkbox').forEach(cb => cb.checked = false);
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    calculerAnneeAcademique();
+    changerFiliere(); 
+});
+
+// FONCTION POUR L'ANNÉE AUTOMATIQUE
+function calculerAnneeAcademique() {
+    const maintenant = new Date();
+    const anneeActuelle = maintenant.getFullYear();
+    const moisActuel = maintenant.getMonth(); // 0 = Janvier
+
+    let debut, fin;
+    if (moisActuel >= 8) { // Si on est après Août
+        debut = anneeActuelle;
+        fin = anneeActuelle + 1;
+    } else {
+        debut = anneeActuelle - 1;
+        fin = anneeActuelle;
     }
+    
+    const texteAnnee = `Année Académique ${debut} - ${fin}`;
+    document.getElementById('annee-auto').innerText = texteAnnee;
+    document.getElementById('timetable-title').innerText = `EMPLOI DU TEMPS : ${debut} - ${fin}`;
+}
 
-    const hours = ["08h - 09h", "09h - 10h", "10h20 - 12h", "13h - 14h", "14h - 15h", "15h - 16h", "16h - 17h"];
-    const days = ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi"];
+// ... garde tes fonctions ajouterCours(), supprimerCours() et updateUI() ici ...
+// (Assure-toi de bien utiliser les checkboxes pour les jours comme dans le message précédent)
 
-    let planning = {};
-    let profHeuresJour = {};
-    let totalHours = 0;
+function updateUI() {
+    const container = document.getElementById('schedule-container');
+    const currentFiliere = document.getElementById('filiere-select').value;
+    const jours = ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"];
+    const tranches = ["08h00 - 10h00", "10h15 - 12h15", "13h00 - 15h00", "15h00 - 17h00"];
+    // À ajouter dans la fonction updateUI()
+    const filiereSelectionnee = document.getElementById('filiere-select').value;
+    document.getElementById('display-filiere-title').innerText = "FILIÈRE : " + filiereSelectionnee;
+    let html = `<table><thead><tr><th>HORAIRES</th>${jours.map(j => `<th>${j.toUpperCase()}</th>`).join('')}</tr></thead><tbody>`;
 
-    // Initialisation
-    days.forEach(day => {
-        planning[day] = {};
-        hours.forEach(hour => {
-            planning[day][hour] = null;
-        });
-    });
-
-    profs.forEach(prof => {
-        profHeuresJour[prof.name] = {};
-        days.forEach(day => {
-            profHeuresJour[prof.name][day] = 0;
-        });
-    });
-
-    // ALGORITHME INTELLIGENT
-    days.forEach(day => {
-
-        hours.forEach(hour => {
-
-            const profDisponible = profs.find(prof => {
-
-                const enseigneFiliere = prof.specialites.some(s =>
-                    matieresFiliere.some(m => m.toLowerCase() === s.toLowerCase())
-                );
-
-                const dispoJour = prof.dispos.includes(day);
-                const limiteHeures = profHeuresJour[prof.name][day] < 4;
-
-                return enseigneFiliere && dispoJour && limiteHeures;
-            });
-
-            if (profDisponible) {
-
-                const matieresValides = profDisponible.specialites.filter(s =>
-                    matieresFiliere.some(m => m.toLowerCase() === s.toLowerCase())
-                );
-
-                const index = profHeuresJour[profDisponible.name][day] % matieresValides.length;
-                const matiere = matieresValides[index];
-
-                planning[day][hour] = {
-                    matiere: matiere,
-                    prof: profDisponible.name
-                };
-
-                profHeuresJour[profDisponible.name][day]++;
-                totalHours++;
-            }
-
-        });
-
-    });
-
-    // Génération HTML
-    let html = `<table><thead><tr><th>HEURE</th>${days.map(d => `<th>${d.toUpperCase()}</th>`).join('')}</tr></thead><tbody>`;
-
-    hours.forEach(hour => {
-        html += `<tr><td class="time-slot"><b>${hour}</b></td>`;
-
-        days.forEach(day => {
-
-            if (planning[day][hour]) {
-                html += `
-                    <td class="cell">
-                        <strong>${planning[day][hour].matiere}</strong><br>
-                        <span class="prof-tag">${planning[day][hour].prof}</span>
-                    </td>
-                `;
+    tranches.forEach(t => {
+        html += `<tr><td class="time-slot"><b>${t}</b></td>`;
+        jours.forEach(j => {
+            const cours = coursProgrammes.find(c => c.filiere === currentFiliere && c.jour === j && c.tranche === t);
+            if (cours) {
+                html += `<td class="cell">
+                    <div class="matiere-title">${cours.matiere}</div>
+                    <div class="prof-name">${cours.prof}</div>
+                    <button class="no-print delete-btn" onclick="supprimerCours('${cours.filiere}','${j}','${t}')">×</button>
+                </td>`;
             } else {
-                html += `<td class="cell" style="background:#f4f4f4;">Libre</td>`;
+                html += `<td class="cell empty">---</td>`;
             }
-
         });
-
         html += `</tr>`;
     });
+    container.innerHTML = html + `</tbody></table>`;
+}
 
-    html += `</tbody></table>`;
-    container.innerHTML = html;
+function supprimerCours(f, j, t) {
+    coursProgrammes = coursProgrammes.filter(c => !(c.filiere === f && c.jour === j && c.tranche === t));
+    localStorage.setItem('esetec_final_data', JSON.stringify(coursProgrammes));
+    updateUI();
+}
 
-    // Mise à jour affichage stats
-    document.getElementById('display-filiere').textContent = filiere;
-    document.getElementById('display-niveau').textContent = niveau;
-    document.getElementById('total-hours').textContent = totalHours + "h";
-
-    // Activer bouton PDF
-    document.getElementById('btnDownload').disabled = false;
+function reinitialiserTout() {
+    if(confirm("Êtes-vous sûr de vouloir effacer TOUT le planning ?")) {
+        localStorage.removeItem('esetec_final_data');
+        coursProgrammes = [];
+        updateUI();
+    }
 }

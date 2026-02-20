@@ -119,6 +119,32 @@
         </div>
     </footer>
 
+    <script>
+        const themeBtn = document.getElementById("themeBtn");
+
+        // Charger le thème sauvegardé
+        const savedTheme = localStorage.getItem("theme");
+        if (savedTheme) {
+            document.documentElement.setAttribute("data-theme", savedTheme);
+            themeBtn.textContent = savedTheme === "dark" ? "☀ Mode Jour" : "🌙 Mode Nuit";
+        }
+
+        themeBtn.addEventListener("click", () => {
+
+            const currentTheme = document.documentElement.getAttribute("data-theme");
+
+            if (currentTheme === "dark") {
+                document.documentElement.setAttribute("data-theme", "light");
+                localStorage.setItem("theme", "light");
+                themeBtn.textContent = "🌙 Mode Nuit";
+            } else {
+                document.documentElement.setAttribute("data-theme", "dark");
+                localStorage.setItem("theme", "dark");
+                themeBtn.textContent = "☀ Mode Jour";
+            }
+
+        });
+    </script>
     <script src="Js/Javascript.js"></script>
 </body>
 </html>

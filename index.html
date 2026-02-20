@@ -3,148 +3,107 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ESETEC Planning Manager | LOH TECH</title>
-    <link rel="stylesheet" href="style/style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <title>ESETEC Planning Flow | LOH TECH</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
 
     <header class="no-print">
         <div class="container">
-            <div class="header-content">
+            <div class="header-logo">
                 <i class="fas fa-university fa-3x"></i>
                 <div>
-                    <h1>ESETEC Planning Flow</h1>
-                    <p>Système Intelligent de Gestion des Emplois du Temps</p>
+                    <h1>ESETEC - GESTION DES EMPLOIS DU TEMPS</h1>
+                    <p id="annee-auto" style="font-weight: 300; letter-spacing: 1px;">Chargement de l'année...</p>
                 </div>
             </div>
         </div>
     </header>
-    
-    <section id="config-section" class="container no-print">
-        <div class="config-grid">
-            
-            <div class="config-card">
-                <h4><i class="fas fa-layer-group"></i> Paramètres du Planning</h4>
-                <div class="form-group">
-                    <label>Filière Académique :</label>
-                    <select id="filiere-select">
-                        <option value="IDA">IDA (Développement d'Applis)</option>
-                        <option value="FC">FC (Finances Comptabilité)</option>
-                        <option value="RHCOM">RHCOM (Ressources Humaines)</option>
-                        <option value="GEC">GEC (Gestion Commerciale)</option>
-                        <option value="GBAT">GBAT (Génie Bâtiment)</option>
-                        <option value="RIT">RIT (Réseaux Télécoms)</option>
-                    </select>
-                </div>
-                <div class="form-group" style="margin-top: 15px;">
-                    <label>Niveau d'étude :</label>
-                    <select id="niveau-select">
-                        <option value="BTS 1">BTS 1ère Année</option>
-                        <option value="BTS 2">BTS 2ème Année</option>
-                        <option value="Licence">Licence Professionnelle</option>
-                    </select>
-                </div>
-            </div>
-
-            <div class="config-card">
-                <h4><i class="fas fa-user-clock"></i> Enseignants & Dispos</h4>
-                <div class="input-group">
-                    <input type="text" id="prof-name" placeholder="Nom (ex: Mr Afro)">
-                    <input type="text" id="prof-specialites" placeholder="Spécialités (ex: Algo, POO, Python)">
-                    
-                    <div class="availability-picker" style="margin-top: 10px; background: #f9f9f9; padding: 10px; border-radius: 5px;">
-                        <p style="font-size: 0.8rem; font-weight: bold; margin-bottom: 5px;">Présence hebdomadaire :</p>
-                        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-                            <label><input type="checkbox" class="day-check" value="Lundi"> Lun</label>
-                            <label><input type="checkbox" class="day-check" value="Mardi"> Mar</label>
-                            <label><input type="checkbox" class="day-check" value="Mercredi"> Mer</label>
-                            <label><input type="checkbox" class="day-check" value="Jeudi"> Jeu</label>
-                            <label><input type="checkbox" class="day-check" value="Vendredi"> Ven</label>
-                        </div>
-                    </div>
-
-                    <button onclick="ajouterProf()" class="btn primary-alt" style="width: 100%; margin-top: 10px;">
-                        <i class="fas fa-plus-circle"></i> Enregistrer l'enseignant
-                    </button>
-                </div>
-                <ul id="list-profs" class="resource-list" style="max-height: 150px; overflow-y: auto; margin-top: 10px;"></ul>
-            </div>
-        </div>
-    </section>
 
     <main class="container">
-        <div class="stats-grid no-print">
-            <div class="stat-card">
-                <span class="stat-label">Filière</span>
-                <span id="display-filiere" class="stat-value">-</span>
+        
+        <section class="config-section no-print">
+            <div class="config-grid">
+                
+                <div class="config-card">
+                    <h4><i class="fas fa-graduation-cap"></i> 1. Choisir la Filière</h4>
+                    <div class="form-group">
+                        <label>Département :</label>
+                        <select id="filiere-select" onchange="changerFiliere()">
+                            <option value="IDA">IDA (Informatique)</option>
+                            <option value="FC">FC (Finance Comptabilité)</option>
+                            <option value="RHCOM">RHCOM (Ressources Humaines)</option>
+                            <option value="GEC">GEC (Gestion Commerciale)</option>
+                            <option value="GBAT">GBAT (Génie Bâtiment)</option>
+                            <option value="RIT">RIT (Réseaux Télécoms)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="config-card">
+                    <h4><i class="fas fa-calendar-plus"></i> 2. Programmer un Cours</h4>
+                    <div class="input-group">
+                        <input type="text" id="prof-name" placeholder="Nom du Prof (ex: M. KOUASSI AFRO)">
+                        
+                        <label style="font-size: 0.8rem; margin-top: 10px; display: block;">Matière :</label>
+                        <select id="prof-matiere"></select>
+
+                        <div class="days-multiselect" style="margin-top: 15px;">
+                            <p style="font-size: 0.8rem; font-weight: bold; margin-bottom: 8px;">Sélectionnez les jours :</p>
+                            <div class="checkbox-grid">
+                                <label><input type="checkbox" class="day-checkbox" value="Lundi"> Lun</label>
+                                <label><input type="checkbox" class="day-checkbox" value="Mardi"> Mar</label>
+                                <label><input type="checkbox" class="day-checkbox" value="Mercredi"> Mer</label>
+                                <label><input type="checkbox" class="day-checkbox" value="Jeudi"> Jeu</label>
+                                <label><input type="checkbox" class="day-checkbox" value="Vendredi"> Ven</label>
+                                <label><input type="checkbox" class="day-checkbox" value="Samedi"> Sam</label>
+                            </div>
+                        </div>
+
+                        <label style="font-size: 0.8rem; margin-top: 15px; display: block;">Tranche Horaire :</label>
+                        <select id="time-select">
+                            <option value="08h00 - 10h00">08h00 - 10h00</option>
+                            <option value="10h15 - 12h15">10h15 - 12h15</option>
+                            <option value="13h00 - 15h00">13h00 - 15h00</option>
+                            <option value="15h00 - 17h00">15h00 - 17h00</option>
+                        </select>
+
+                        <button onclick="ajouterCours()" class="btn-add" style="width: 100%; margin-top: 15px;">
+                            <i class="fas fa-check-circle"></i> Placer dans le planning
+                        </button>
+                    </div>
+                </div>
+
             </div>
-            <div class="stat-card">
-                <span class="stat-label">Niveau</span>
-                <span id="display-niveau" class="stat-value">-</span>
-            </div>
-            <div class="stat-card">
-                <span class="stat-label">Volume Horaire</span>
-                <span id="total-hours" class="stat-value">0h</span>
-            </div>
-        </div>
+        </section>
 
         <div class="controls no-print">
-            <button id="btnGenerate" class="btn primary"><i class="fas fa-magic"></i> Générer Intelligent</button>
-            <button id="btnDownload" class="btn secondary" disabled><i class="fas fa-file-pdf"></i> Imprimer / PDF</button>
-            <button id="btnReset" class="btn danger"><i class="fas fa-trash-alt"></i> Réinitialiser</button>
-            <button id="btnTheme" class="btn dark-toggle"><i class="fas fa-moon"></i></button>
+            <button onclick="window.print()" class="btn-print">
+                <i class="fas fa-print"></i> Imprimer / PDF
+            </button>
+            <button onclick="reinitialiserTout()" class="btn-danger">
+                <i class="fas fa-sync-alt"></i> Vider tout le planning
+            </button>
         </div>
 
         <div id="print-area">
-            <div id="schedule-container" class="glass-container">
-                <div class="placeholder-text">
-                    <p><i class="fas fa-calendar-check fa-2x"></i><br>Configurez vos experts puis cliquez sur Générer.</p>
-                </div>
+            <div class="timetable-header">
+                <h2 id="timetable-title">EMPLOI DU TEMPS</h2>
+                <h3 id="display-filiere-title">FILIÈRE : IDA</h3>
             </div>
-
-            <div id="notes-section">
-                <h3><i class="fas fa-info-circle"></i> Notes & Informations</h3>
-                <div id="notes-content" contenteditable="true" class="notes-paper">
-                    Saisissez ici les devoirs, dates d'examens ou rappels administratifs...
+            
+            <div id="schedule-container">
                 </div>
+
+            <div class="timetable-footer">
+                <p>Direction des Études ESETEC | Document généré par LOH TECH System</p>
             </div>
         </div>
+
     </main>
 
-    <footer class="no-print">
-        <div class="container">
-            <p>&copy; 2025 <strong>LOH ANGE EBENEZER</strong> | Projet ESETEC - LOH TECH</p>
-        </div>
-    </footer>
-
-    <script>
-        const themeBtn = document.getElementById("themeBtn");
-
-        // Charger le thème sauvegardé
-        const savedTheme = localStorage.getItem("theme");
-        if (savedTheme) {
-            document.documentElement.setAttribute("data-theme", savedTheme);
-            themeBtn.textContent = savedTheme === "dark" ? "☀ Mode Jour" : "🌙 Mode Nuit";
-        }
-
-        themeBtn.addEventListener("click", () => {
-
-            const currentTheme = document.documentElement.getAttribute("data-theme");
-
-            if (currentTheme === "dark") {
-                document.documentElement.setAttribute("data-theme", "light");
-                localStorage.setItem("theme", "light");
-                themeBtn.textContent = "🌙 Mode Nuit";
-            } else {
-                document.documentElement.setAttribute("data-theme", "dark");
-                localStorage.setItem("theme", "dark");
-                themeBtn.textContent = "☀ Mode Jour";
-            }
-
-        });
-    </script>
     <script src="Js/Javascript.js"></script>
 </body>
 </html>

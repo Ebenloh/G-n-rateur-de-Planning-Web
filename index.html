@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ESETEC Planning Flow | LOH TECH</title>
-    <link rel="stylesheet" href="style/style.css">
+    <link rel="stylesheet" href="css/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
@@ -32,12 +32,20 @@
                     <div class="form-group">
                         <label>Département :</label>
                         <select id="filiere-select" onchange="changerFiliere()">
-                            <option value="IDA">IDA (Informatique)</option>
-                            <option value="FC">FC (Finance Comptabilité)</option>
-                            <option value="RHCOM">RHCOM (Ressources Humaines)</option>
-                            <option value="GEC">GEC (Gestion Commerciale)</option>
-                            <option value="GBAT">GBAT (Génie Bâtiment)</option>
-                            <option value="RIT">RIT (Réseaux Télécoms)</option>
+                            <option value="IDA-1">IDA 1 (Informatique Developpeur d'Application)</option>
+                            <option value="IDA-2">IDA 2 (Informatique Developpeur d'Application)</option>
+                            <option value="FCGE-1">FCGE 1 (Finance Comptabilité)</option>
+                            <option value="FCGE-2">FCGE 2 (Finance Comptabilité)</option>
+                            <option value="RHCOM-1">RHCOM 1 (Ressources Humaines)</option>
+                            <option value="RHCOM-2">RHCOM 2 (Ressources Humaines)</option>
+                            <option value="GEC-1">GEC 1 (Gestion Commerciale)</option>
+                            <option value="GEC-2">GEC 2 (Gestion Commerciale)</option>
+                            <option value="GBAT-1">GBAT 1 (Génie Civil option Bâtiment)</option>
+                            <option value="GBAT-2">GBAT 2 (Génie Civil option Bâtiment)</option>
+                            <option value="GERNA-1">GERNA 1 (Génie Civil option Bâtiment)</option>
+                            <option value="GERNA-2">GERNA 2 (Génie Civil option Bâtiment)</option>
+                            <option value="RIT-1">RIT 1 (Réseaux Informatique et Télécommunication)</option>
+                            <option value="RIT-2">RIT 2 (Réseaux Informatique et Télécommunication)</option>
                         </select>
                     </div>
                 </div>
@@ -49,6 +57,9 @@
                         
                         <label style="font-size: 0.8rem; margin-top: 10px; display: block;">Matière :</label>
                         <select id="prof-matiere"></select>
+
+                        <label style="font-size: 0.8rem; margin-top: 10px; display: block;">Salle :</label>
+                        <input type="text" id="salle" placeholder="Ex: Salle 12 / Lab Info 2">
 
                         <div class="days-multiselect" style="margin-top: 15px;">
                             <p style="font-size: 0.8rem; font-weight: bold; margin-bottom: 8px;">Sélectionnez les jours :</p>
@@ -107,4 +118,3 @@
     <script src="Js/Javascript.js"></script>
 </body>
 </html>
-

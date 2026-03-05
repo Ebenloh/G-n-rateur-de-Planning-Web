@@ -19,6 +19,7 @@ let coursProgrammes = JSON.parse(localStorage.getItem('esetec_final_data')) || [
 
 document.addEventListener('DOMContentLoaded', () => {
     changerFiliere(); // Initialise les matières au chargement
+    calculerAnneeAcademique();
 });
 
 function changerFiliere() {
@@ -245,3 +246,4 @@ function reinitialiserTout() {
         updateUI();
     }
 }
+

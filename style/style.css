@@ -138,9 +138,24 @@ th { background: var(--primary-blue); color: white; }
     font-weight: 600;
 }
 
+@media print{
+
+    .separator-row{
+        background:#ddd !important;
+    }
+
+    .separator-cell{
+        font-size:20px;
+        padding:25px;
+        font-weight:bold;
+    }
+
+}
+
 /* Impression */
 @media print {
     .no-print { display: none; }
     table { width: 100%; }
     th { background: #eee !important; color: black !important; }
 }
+

@@ -203,7 +203,7 @@ function sauvegarderModification(cell, filiere, jour, tranche) {
 
     const matiere = lignes[0] || "";
     const prof = lignes[1] || "";
-    const salle = lignes[2] ? lignes[2].replace("Salle :", "").trim() : "";
+    const salle = lignes[2] ? lignes[2].replace("").trim() : "";
 
     const index = coursProgrammes.findIndex(c =>
         c.filiere === filiere &&
@@ -245,3 +245,4 @@ function reinitialiserTout() {
         updateUI();
     }
 }
+
